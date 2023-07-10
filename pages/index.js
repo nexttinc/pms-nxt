@@ -63,7 +63,7 @@ export default function Home({ data }) {
                         {row.id}
                     </Table.Cell>
                     <Table.Cell>
-                        <Link href={`/project/register/${row.id}`} key={row.id} className={Styles.a_list}>
+                        <Link href={`/project/register/${row.id}`} key={row.id} className="underline">
                             {row.projectName}
                         </Link>
                     </Table.Cell>
@@ -74,16 +74,21 @@ export default function Home({ data }) {
                     </Table.Cell>
                     <Table.Cell>{row.status}</Table.Cell>
                     <Table.Cell>
-                        <Button
-                            gradientDuoTone="purpleToPink"
-                            /* onClick={() => onClick(row.id, row.projectName)}*/
-                            onClick={() => {
-                                props.setOpenModal('dismissible');
-                                setCurrentId(row.id);
-                            }}
-                        >
-                            EDIT
-                        </Button>
+                        <div className="inline-block mx-1">
+                            <Button
+                                gradientDuoTone="purpleToPink"
+                                /* onClick={() => onClick(row.id, row.projectName)}*/
+                                onClick={() => {
+                                    props.setOpenModal('dismissible');
+                                    setCurrentId(row.id);
+                                }}
+                            >
+                                EDIT
+                            </Button>
+                        </div>
+                        <div className="inline-block mx-1">
+                            <Button gradientDuoTone="purpleToPink">DEL</Button>
+                        </div>
                     </Table.Cell>
                 </Table.Row>
             </>
