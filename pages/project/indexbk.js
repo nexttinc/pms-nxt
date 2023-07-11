@@ -2,6 +2,7 @@ import { Button, Table, Pagination } from 'flowbite-react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import RegistModal from './modal';
 
 export default function Project({ data }) {
     const router = useRouter();
@@ -21,11 +22,20 @@ export default function Project({ data }) {
     const [totCnt, displayRows] = data;
     const [currentPage, setCurrentPage] = useState(1);
     const [currentId, setCurrentId] = useState('');
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
 
     const rowNum = 10;
     const totalPage = Math.ceil(totCnt / rowNum);
     const [total, setTotal] = useState(totalPage);
     const onPageChange = (page) => setCurrentPage(page);
+
+    const [openModal, setOpenModal] = useState(undefined);
+    const modalProps = { openModal, setOpenModal };
+
+    useEffect(() => {
+        return () => {};
+    }, [openModal]);
 
     useEffect(() => {
         return () => {
@@ -57,8 +67,16 @@ export default function Project({ data }) {
                     </Table.Cell>
                     <Table.Cell>{row.status}</Table.Cell>
                     <Table.Cell>
-                        <div className="inline-block mx-1 my-0.5">
-                            <Button gradientDuoTone="purpleToPink" onClick={() => onClick(row.id, row.projectName)}>
+                        <div className="inline-block mx-1">
+                            <Button
+                                gradientDuoTone="purpleToPink"
+                                onClick={() => onClick(row.id, row.projectName)}
+
+                                // onClick={() => {
+                                //     modalProps.setOpenModal('dismissible');
+                                //     setCurrentId(row.id);
+                                // }}
+                            >
                                 수정
                             </Button>
                         </div>
@@ -78,7 +96,13 @@ export default function Project({ data }) {
             </div>
             <div className="my-5 text-right">
                 <div className="inline-block">
-                    <Button gradientDuoTone="purpleToPink" onClick={() => onClick('0', '')}>
+                    <Button
+                        gradientDuoTone="purpleToPink"
+                        onClick={() => onClick('0', '')}
+                        // onClick={() => {
+                        //     modalProps.setOpenModal('dismissible');
+                        // }}
+                    >
                         등록
                     </Button>
                 </div>
@@ -109,6 +133,18 @@ export default function Project({ data }) {
                     }}
                     totalPages={total}
                 />
+            </div>
+            <div>
+                {/* <form className="flex max-w-md flex-col gap-4">
+                    <RegistModal
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        endDate={endDate}
+                        setEndDate={setEndDate}
+                        modalProps={modalProps}
+                        setOpenModal={setOpenModal}
+                    />
+                </form> */}
             </div>
             <style jsx>{`
                 a {
