@@ -14,6 +14,7 @@ export default function Form(props) {
             className="inline-block w-full"
             value={props.toDoText}
             onChange={onChangeInput}
+            required
           ></TextInput>
         </div>
         <div className="absolute right-1">

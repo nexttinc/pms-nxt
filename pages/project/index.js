@@ -2,10 +2,9 @@ import { Button, Table, Pagination } from "flowbite-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import RegistModal from "./register";
 
-export default function Home({ data }) {
+export default function Project({ data }) {
   const router = useRouter();
   const [totCnt, displayRows] = data;
   const [currentPage, setCurrentPage] = useState(1);
@@ -59,15 +58,7 @@ export default function Home({ data }) {
           <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
             {row.id}
           </Table.Cell>
-          <Table.Cell>
-            {/* <Link
-              href={`/project/register/${row.id}`}
-              key={row.id}
-              className="underline"
-            > */}
-            {row.projectName}
-            {/* </Link> */}
-          </Table.Cell>
+          <Table.Cell>{row.projectName}</Table.Cell>
           <Table.Cell>{AddComma(row.downPayment)}</Table.Cell>
           <Table.Cell>{row.member}</Table.Cell>
           <Table.Cell>
@@ -143,6 +134,7 @@ export default function Home({ data }) {
           <Table.Body className="divide-y">{Rows}</Table.Body>
         </Table>
       </div>
+
       <div className="text-center my-5">
         <Pagination
           currentPage={currentPage}

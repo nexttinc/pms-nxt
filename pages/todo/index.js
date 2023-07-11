@@ -6,10 +6,15 @@ import List from "./list";
 export default function All() {
   const [toDoText, setToDoText] = useState("");
   const [toDoList, setToDoList] = useState([]);
+
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!toDoText) return;
+    if (!toDoText) {
+      setToDoTextColor("info");
+      return;
+    }
+
     const nextToDoList = {
       id: toDoList.length,
       text: toDoText,
