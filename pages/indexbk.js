@@ -235,7 +235,8 @@ export default function HomeBk({ data }) {
 }
 
 export async function getServerSideProps(context) {
-    const res = await fetch(`http://localhost:3000/api/projects`);
+    // const res = await fetch(`http://localhost:3000/api/projects`);
+    const res = await fetch(`http://localhost:3000/api/projects?rownum=10&page=1`);
     const data = await res.json();
     // console.log(data);
     return { props: { data } };

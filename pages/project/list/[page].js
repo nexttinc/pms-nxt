@@ -1,12 +1,15 @@
-import { Button, Table, Pagination } from 'flowbite-react';
+import { Button, Table } from 'flowbite-react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Pagination from '@mui/material/Pagination';
 
-const rowNum = 10;
+const rowNum = 8;
 
 export default function Project({ data }) {
     const router = useRouter();
+    const page = parseInt(router.query.page);
+    // console.log('router value : ', page);
     const onClick = (id, projectName) => {
         router.push(
             {
@@ -20,31 +23,27 @@ export default function Project({ data }) {
     };
 
     const [totCnt, displayRows] = data;
-    // const [prjList, setPrjList] = useState(displayRows);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(page);
     const [currentId, setCurrentId] = useState('');
 
     const totalPage = Math.ceil(totCnt / rowNum);
     const [total, setTotal] = useState(totalPage);
-    const onPageChange = (page) => setCurrentPage(page);
+    const onPageChange = (e, page) => {
+        // setCurrentPage(page);
+        router.push(
+            {
+                pathname: `/project/list/${page}`,
+                query: {},
+            },
+            `/project/list/${page}`
+        );
+    };
 
     useEffect(() => {
         return () => {
             console.log(currentId);
         };
     }, [currentId]);
-
-    // useEffect(() => {
-    //     return () => {
-    //         // db 가져온다.
-    //         fetchList();
-    //     };
-    // }, [currentPage]);
-
-    // async function fetchList() {
-    //     const response = await fetch(`http://localhost:3000/api/projects?page=${currentPage}`);
-    //     setPrjList(response.json());
-    // }
 
     const Rows = displayRows.map((row) => {
         function AddComma(num) {
@@ -58,7 +57,7 @@ export default function Project({ data }) {
 
         return (
             <>
-                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 text-center">
+                <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 text-center" key={row.id}>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
                         {row.id}
                     </Table.Cell>
@@ -71,12 +70,18 @@ export default function Project({ data }) {
                     <Table.Cell>{row.status}</Table.Cell>
                     <Table.Cell>
                         <div className="inline-block mx-1 my-0.5">
-                            <Button gradientDuoTone="purpleToPink" onClick={() => onClick(row.id, row.projectName)}>
+                            <Button
+                                gradientDuoTone="purpleToPink"
+                                onClick={() => onClick(row.id, row.projectName)}
+                                size="sm"
+                            >
                                 수정
                             </Button>
                         </div>
                         <div className="inline-block mx-1">
-                            <Button gradientDuoTone="purpleToPink">삭제</Button>
+                            <Button gradientDuoTone="purpleToPink" size="sm">
+                                삭제
+                            </Button>
                         </div>
                     </Table.Cell>
                 </Table.Row>
@@ -86,7 +91,7 @@ export default function Project({ data }) {
 
     return (
         <>
-            <div className="mx-auto py-20 text-center text-4xl font-extrabold">
+            <div className="mx-auto py-3 text-center text-4xl font-extrabold">
                 <h1>프로젝트 관리</h1>
             </div>
             <div className="my-5 text-right">
@@ -113,29 +118,20 @@ export default function Project({ data }) {
                     <Table.Body className="divide-y">{Rows}</Table.Body>
                 </Table>
             </div>
-            <div>
-                {currentPage}/{total}
-            </div>
             <div className="text-center my-5">
-                <Pagination
-                    currentPage={currentPage}
-                    onPageChange={onPageChange}
-                    totalPages={total}
-                    nextLabel="다음"
-                    previousLabel="이전"
-                />
+                <div className="w-auto inline-block">
+                    <Pagination count={total} defaultPage={currentPage} onChange={onPageChange} color="secondary" />
+                </div>
             </div>
-            <style jsx>{`
-                a {
-                    text-decoration: underline;
-                }
-            `}</style>
         </>
     );
 }
 
 export async function getServerSideProps(context) {
-    const res = await fetch(`http://localhost:3000/api/projects`);
+    let page = context.query.page;
+    // console.log('context value : ', page);
+    if (!page) page = 1;
+    const res = await fetch(`http://localhost:3000/api/projects?rownum=${rowNum}&page=${page}`);
     const data = await res.json();
     return { props: { data } };
 }

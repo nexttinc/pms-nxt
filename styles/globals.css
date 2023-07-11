@@ -27,5 +27,15 @@ textarea,
 blockquote,
 span,
 * {
-  font-family: "Noto Sans KR", sans-serif;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.bg-blue-50 {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(235 245 255 / var(--tw-bg-opacity)) !important;
+}
+
+.text-blue-600 {
+    --tw-text-opacity: 1 !important;
+    color: rgb(28 100 242 / var(--tw-text-opacity)) !important;
 }

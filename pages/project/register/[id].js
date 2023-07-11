@@ -27,8 +27,8 @@ export default function Register({ data }) {
 
     return (
         <>
-            <form className="" onSubmit={onSubmit}>
-                <div className="mx-auto py-20 text-center">
+            <form onSubmit={onSubmit}>
+                <div className="mx-auto py-3 text-center">
                     <div className="mx-auto py-20 text-center text-4xl font-extrabold">프로젝트 정보</div>
                     <div className="space-y-6 w-7/12 absolute left-1/2 -translate-x-1/2">
                         <div>
