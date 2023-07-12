@@ -4,12 +4,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Pagination from "@mui/material/Pagination";
 
-const rowNum = 5;
+const rowNum = 6;
 
-export default function Project({ data }) {
+export default function Index({ data }) {
   const router = useRouter();
-  const page = parseInt(router.query.page);
-  // console.log('router value : ', page);
+  const page = router.query.page;
   const onClick = (id, projectName) => {
     router.push(
       {
@@ -39,13 +38,13 @@ export default function Project({ data }) {
     );
   };
 
-  useEffect(() => {
-    return () => {
-      console.log(currentId);
-    };
-  }, [currentId]);
+  // useEffect(() => {
+  //     return () => {
+  //         console.log(currentId);
+  //     };
+  // }, [currentId]);
 
-  const Rows = displayRows.map((row) => {
+  const Rows = displayRows.map((row, index) => {
     function AddComma(num) {
       var regexp = /\B(?=(\d{3})+(?!\d))/g;
       return num.toString().replace(regexp, ",");
@@ -151,11 +150,9 @@ export default function Project({ data }) {
 }
 
 export async function getServerSideProps(context) {
-  let page = context.query.page;
-  // console.log('context value : ', page);
-  if (!page) page = 1;
+  const page = context.query.page;
   const res = await fetch(
-    `http://localhost:3000/api/projects?rownum=${rowNum}&page=${page}`
+    `http://localhost:3000/api/projects?rownum=${rowNum}&page=1`
   );
   const data = await res.json();
   return { props: { data } };
