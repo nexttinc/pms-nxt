@@ -1,15 +1,12 @@
-import { Button, Table } from "flowbite-react";
+import { Button, Table, Pagination } from "flowbite-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import Pagination from "@mui/material/Pagination";
 
-const rowNum = 5;
+const rowNum = 10;
 
 export default function Project({ data }) {
   const router = useRouter();
-  const page = parseInt(router.query.page);
-  // console.log('router value : ', page);
   const onClick = (id, projectName) => {
     router.push(
       {
@@ -23,21 +20,13 @@ export default function Project({ data }) {
   };
 
   const [totCnt, displayRows] = data;
-  const [currentPage, setCurrentPage] = useState(page);
+  // const [prjList, setPrjList] = useState(displayRows);
+  const [currentPage, setCurrentPage] = useState(1);
   const [currentId, setCurrentId] = useState("");
 
   const totalPage = Math.ceil(totCnt / rowNum);
   const [total, setTotal] = useState(totalPage);
-  const onPageChange = (e, page) => {
-    // setCurrentPage(page);
-    router.push(
-      {
-        pathname: `/project/list/${page}`,
-        query: {},
-      },
-      `/project/list/${page}`
-    );
-  };
+  const onPageChange = (page) => setCurrentPage(page);
 
   useEffect(() => {
     return () => {
@@ -45,7 +34,7 @@ export default function Project({ data }) {
     };
   }, [currentId]);
 
-  const Rows = displayRows.map((row) => {
+  const Rows = displayRows.map((row, index) => {
     function AddComma(num) {
       var regexp = /\B(?=(\d{3})+(?!\d))/g;
       return num.toString().replace(regexp, ",");
@@ -59,32 +48,32 @@ export default function Project({ data }) {
       <>
         <Table.Row
           className="bg-white dark:border-gray-700 dark:bg-gray-800 text-center"
-          key={row.id}
+          key={index}
         >
-          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
+          <Table.Cell
+            key={index}
+            className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center"
+          >
             {row.id}
           </Table.Cell>
-          <Table.Cell>{row.projectName}</Table.Cell>
-          <Table.Cell>{AddComma(row.downPayment)}</Table.Cell>
-          <Table.Cell>{row.member}</Table.Cell>
-          <Table.Cell>
+          <Table.Cell key={index}>{row.projectName}</Table.Cell>
+          <Table.Cell key={index}>{AddComma(row.downPayment)}</Table.Cell>
+          <Table.Cell key={index}>{row.member}</Table.Cell>
+          <Table.Cell key={index}>
             {getDate(row.startDate)}~{getDate(row.endDate)}
           </Table.Cell>
-          <Table.Cell>{row.status}</Table.Cell>
-          <Table.Cell>
+          <Table.Cell key={index}>{row.status}</Table.Cell>
+          <Table.Cell key={index}>
             <div className="inline-block mx-1 my-0.5">
               <Button
                 gradientDuoTone="purpleToPink"
                 onClick={() => onClick(row.id, row.projectName)}
-                size="sm"
               >
                 수정
               </Button>
             </div>
             <div className="inline-block mx-1">
-              <Button gradientDuoTone="purpleToPink" size="sm">
-                삭제
-              </Button>
+              <Button gradientDuoTone="purpleToPink">삭제</Button>
             </div>
           </Table.Cell>
         </Table.Row>
@@ -94,7 +83,7 @@ export default function Project({ data }) {
 
   return (
     <>
-      <div className="mx-auto py-3 text-center text-4xl font-extrabold">
+      <div className="mx-auto py-20 text-center text-4xl font-extrabold">
         <h1>프로젝트 관리</h1>
       </div>
       <div className="my-5 text-right">
@@ -133,29 +122,33 @@ export default function Project({ data }) {
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
           </Table.Head>
+          // eslint-disable-next-line
           <Table.Body className="divide-y">{Rows}</Table.Body>
         </Table>
       </div>
-      <div className="text-center my-5">
-        <div className="w-auto inline-block">
-          <Pagination
-            count={total}
-            defaultPage={currentPage}
-            onChange={onPageChange}
-            color="secondary"
-          />
-        </div>
+      <div>
+        {currentPage}/{total}
       </div>
+      <div className="text-center my-5">
+        <Pagination
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          totalPages={total}
+          nextLabel="다음"
+          previousLabel="이전"
+        />
+      </div>
+      <style jsx>{`
+        a {
+          text-decoration: underline;
+        }
+      `}</style>
     </>
   );
 }
 
 export async function getServerSideProps(context) {
-  let page = context.query.page;
-  if (!page) page = 1;
-  const res = await fetch(
-    `http://localhost:3000/api/project?rownum=${rowNum}&page=${page}`
-  );
+  const res = await fetch(`http://localhost:3000/api/project`);
   const data = await res.json();
   return { props: { data } };
 }
