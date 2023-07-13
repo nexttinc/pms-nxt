@@ -27,19 +27,40 @@ export default function Register({ data }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
+    const id = data.id;
     const sDate = startDate.toISOString().slice(0, 10);
     const eDate = endDate.toISOString().slice(0, 10);
-    // console.log(projectName);
-    // console.log(downPayment);
-    // console.log(allocPlan);
-    // console.log(allocDesign);
-    // console.log(allocPub);
-    // console.log(allocDev);
-    // console.log(member);
-    // console.log(startDate);
-    // console.log(endDate);
-    // console.log(sDate);
-    // console.log(eDate);
+    const reqData = {
+      projectName: {projectName},
+      downPayment: {downPayment},
+      allocPlan: {allocPlan},
+      allocDesign: {allocDesign},
+      allocPub: {allocPub},
+      allocDev: {allocDev},
+      member: {member},
+      startDate: {sDate},
+      endDate: {eDate},
+      status: {status}
+    };
+
+    console.log(reqData);
+    return;
+    
+    fetch(`http://localhost:3000/api/project/alter/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(reqData)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('서버로부터 받은 응답:', data);
+      })
+      .catch(error => {
+        console.error('오류 발생:', error);
+      });
   };
 
   function handleSelect() {
