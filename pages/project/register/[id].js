@@ -7,7 +7,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "flowbite-react";
-
 export default function Register({ data }) {
   console.log(data);
   const router = useRouter();
