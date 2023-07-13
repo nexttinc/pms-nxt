@@ -32,16 +32,16 @@ export default function Register({ data }) {
     const sDate = startDate.toISOString().slice(0, 10);
     const eDate = endDate.toISOString().slice(0, 10);
     const reqData = {
-      projectName: {projectName},
-      downPayment: {downPayment},
-      allocPlan: {allocPlan},
-      allocDesign: {allocDesign},
-      allocPub: {allocPub},
-      allocDev: {allocDev},
-      member: {member},
-      startDate: {sDate},
-      endDate: {eDate},
-      status: {status}
+      projectName,
+      downPayment,
+      allocPlan,
+      allocDesign,
+      allocPub,
+      allocDev,
+      member,
+      sDate,
+      eDate,
+      status
     };
 
     console.log(reqData);
