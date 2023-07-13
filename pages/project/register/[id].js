@@ -45,8 +45,6 @@ export default function Register({ data }) {
     };
 
     console.log(reqData);
-    return;
-    
     fetch(`http://localhost:3000/api/project/alter/${id}`, {
       method: 'POST',
       headers: {
