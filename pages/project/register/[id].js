@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Alert } from "flowbite-react";
+import { HiInformationCircle } from "flowbite-react";
 
 export default function Register({ data }) {
   console.log(data);
@@ -16,6 +18,8 @@ export default function Register({ data }) {
   const [allocPub, setAllocPub] = useState(data?.allocPub);
   const [allocDev, setAllocDev] = useState(data?.allocDev);
   const [member, setMember] = useState(data?.member);
+  const [isAlertSuccessOpen, setisAlertSuccessOpen] = useState(false);
+  const [isAlertFailOpen, setisAlertFailOpen] = useState(false);
 
   const [startDate, setStartDate] = useState(
     data == null ? new Date() : new Date(data.startDate)
@@ -24,7 +28,6 @@ export default function Register({ data }) {
     data == null ? new Date() : new Date(data.endDate)
   );
   const [status, setStatus] = useState(data?.status);
-
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -32,34 +35,41 @@ export default function Register({ data }) {
     const sDate = startDate.toISOString().slice(0, 10);
     const eDate = endDate.toISOString().slice(0, 10);
     const reqData = {
-      projectName: {projectName},
-      downPayment: {downPayment},
-      allocPlan: {allocPlan},
-      allocDesign: {allocDesign},
-      allocPub: {allocPub},
-      allocDev: {allocDev},
-      member: {member},
-      startDate: {sDate},
-      endDate: {eDate},
-      status: {status}
+      projectName,
+      downPayment,
+      allocPlan,
+      allocDesign,
+      allocPub,
+      allocDev,
+      member,
+      sDate,
+      eDate,
+      status,
     };
 
-    console.log(reqData);
-    return;
-    
+    setisAlertSuccessOpen(false);
+    setisAlertFailOpen(false);
+
     fetch(`http://localhost:3000/api/project/alter/${id}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(reqData)
+      body: JSON.stringify(reqData),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('서버로부터 받은 응답:', data);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data == 1) {
+          console.log("success");
+          setisAlertSuccessOpen(true);
+        } else {
+          setisAlertFailOpen(true);
+          console.log("data : ", data);
+        }
       })
-      .catch(error => {
-        console.error('오류 발생:', error);
+      .catch((error) => {
+        console.error("오류 발생:", error);
+        setisAlertFailOpen(true);
       });
   };
 
@@ -76,6 +86,24 @@ export default function Register({ data }) {
             프로젝트 정보
           </div>
           <div className="space-y-6 w-7/12 absolute left-1/2 -translate-x-1/2">
+            {isAlertSuccessOpen && (
+              <Alert>
+                <span className=" mr-3 font-extrabold">Info alert!</span>
+                성공적으로 수정되었습니다.
+              </Alert>
+            )}
+
+            {isAlertFailOpen && (
+              <Alert color="failure" icon={HiInformationCircle}>
+                <span>
+                  <p>
+                    <span className=" mr-3 font-extrabold">Info alert!</span>
+                    수정 시 문제가 발생했습니다. 관리자에게 문의해주세요.
+                  </p>
+                </span>
+              </Alert>
+            )}
+
             <div>
               <TextInput
                 type="text"
