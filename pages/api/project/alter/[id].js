@@ -6,7 +6,19 @@ export default async function handler(req, res) {
   if (method == "POST") {
     try {
       const Pool = await DB.MySqlConn.getInstance.connect();
-      const { title, post } = JSON.parse(req.body);
+      const id = req.id;
+      const {       
+        projectName,
+        downPayment,
+        allocPlan,
+        allocDesign,
+        allocPub,
+        allocDev,
+        member,
+        sDate,
+        eDate,
+        status
+   } = JSON.parse(req.body);
 
       const sql = `update a1_project set  `;
       const result = await Pool.query(sql);
