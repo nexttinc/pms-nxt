@@ -1,8 +1,8 @@
 import { Button, Table } from "flowbite-react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Pagination from "@mui/material/Pagination";
 import { add3Digit, getYMDate } from "../../../common/utils";
+import Pagination from "@mui/material/Pagination";
 
 const rowNum = 5;
 
@@ -133,7 +133,7 @@ export async function getServerSideProps(context) {
   let page = context.query.page;
   if (!page) page = 1;
   const res = await fetch(
-    `http://localhost:3000/api/project?rownum=${rowNum}&page=${page}`
+    `${process.env.NEXT_PUBLIC_WEB_URL}/api/project?rownum=${rowNum}&page=${page}`
   );
   const data = await res.json();
   return { props: { data } };

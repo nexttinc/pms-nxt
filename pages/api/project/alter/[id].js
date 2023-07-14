@@ -8,7 +8,7 @@ export default async function handler(req, res) {
       const id = req.query.id;
       const Pool = await DB.MySqlConn.getInstance.connect();
       const body = req.body;
-      const sql = `update a1_project set  
+      const sql = `update pms_project set  
                                     projectName = '${body.projectName}',
                                     downPayment = '${body.downPayment.replace(
                                       /,/g,

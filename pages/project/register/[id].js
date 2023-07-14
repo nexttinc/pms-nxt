@@ -1,4 +1,3 @@
-"use client";
 // only import what you want to use
 import { Button, Label, Dropdown, TextInput } from "flowbite-react";
 import { useState } from "react";
@@ -6,7 +5,6 @@ import { useRouter } from "next/router";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Alert } from "flowbite-react";
-import { HiInformationCircle } from "flowbite-react";
 import { add3Digit } from "../../../common/utils";
 
 export default function Register({ data }) {
@@ -75,10 +73,12 @@ export default function Register({ data }) {
     let targetUrl;
     if (id == 0)
       // 등록 시
-      targetUrl = "http://localhost:3000/api/project/insert/";
-    else targetUrl = "http://localhost:3000/api/project/alter/"; //수정 시
+      targetUrl = `${process.env.NEXT_PUBLIC_WEB_URL}/api/project/insert/${id}`;
+    else
+      targetUrl = `${process.env.NEXT_PUBLIC_WEB_URL}/api/project/alter/${id}`; //수정 시
 
-    fetch(`${targetUrl}${id}`, {
+    console.log(process.env.NEXT_PUBLIC_WEB_URL);
+    fetch(targetUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -124,7 +124,7 @@ export default function Register({ data }) {
             )}
 
             {isAlertFailOpen && (
-              <Alert color="failure" icon={HiInformationCircle}>
+              <Alert color="failure">
                 <span>
                   <p>
                     <span className=" mr-3 font-extrabold">Info alert!</span>
@@ -286,7 +286,9 @@ export async function getServerSideProps(context) {
   let data = null;
   const id = context.query.id;
   if (id != "0") {
-    const res = await fetch(`http://localhost:3000/api/project/${id}`);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/project/${id}`
+    );
     data = await res.json();
   }
 
