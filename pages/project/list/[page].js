@@ -6,6 +6,15 @@ import Pagination from "@mui/material/Pagination";
 
 const rowNum = 5;
 
+function AddComma(num) {
+  var regexp = /\B(?=(\d{3})+(?!\d))/g;
+  return num.toString().replace(regexp, ",");
+}
+
+function getDate(str) {
+  return str.substr(0, 10);
+}
+
 export default function Project({ data }) {
   const router = useRouter();
   const page = parseInt(router.query.page);
@@ -38,59 +47,6 @@ export default function Project({ data }) {
       `/project/list/${page}`
     );
   };
-
-  useEffect(() => {
-    return () => {
-      console.log(currentId);
-    };
-  }, [currentId]);
-
-  const Rows = displayRows.map((row) => {
-    function AddComma(num) {
-      var regexp = /\B(?=(\d{3})+(?!\d))/g;
-      return num.toString().replace(regexp, ",");
-    }
-
-    function getDate(str) {
-      return str.substr(0, 10);
-    }
-
-    return (
-      <>
-        <Table.Row
-          className="bg-white dark:border-gray-700 dark:bg-gray-800 text-center"
-          key={row.id}
-        >
-          <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
-            {row.id}
-          </Table.Cell>
-          <Table.Cell>{row.projectName}</Table.Cell>
-          <Table.Cell>{AddComma(row.downPayment)}</Table.Cell>
-          <Table.Cell>{row.member}</Table.Cell>
-          <Table.Cell>
-            {getDate(row.startDate)}~{getDate(row.endDate)}
-          </Table.Cell>
-          <Table.Cell>{row.status}</Table.Cell>
-          <Table.Cell>
-            <div className="inline-block mx-1 my-0.5">
-              <Button
-                gradientDuoTone="purpleToPink"
-                onClick={() => onClick(row.id, row.projectName)}
-                size="sm"
-              >
-                수정
-              </Button>
-            </div>
-            <div className="inline-block mx-1">
-              <Button gradientDuoTone="purpleToPink" size="sm">
-                삭제
-              </Button>
-            </div>
-          </Table.Cell>
-        </Table.Row>
-      </>
-    );
-  });
 
   return (
     <>
@@ -133,7 +89,41 @@ export default function Project({ data }) {
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
           </Table.Head>
-          <Table.Body className="divide-y">{Rows}</Table.Body>
+          <Table.Body className="divide-y">
+            {displayRows.map((row, i) => (
+              <Table.Row
+                className="bg-white dark:border-gray-700 dark:bg-gray-800 text-center"
+                key={row.id}
+              >
+                <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white text-center">
+                  {row.id}
+                </Table.Cell>
+                <Table.Cell>{row.projectName}</Table.Cell>
+                <Table.Cell>{AddComma(row.downPayment)}</Table.Cell>
+                <Table.Cell>{row.member}</Table.Cell>
+                <Table.Cell>
+                  {getDate(row.startDate)}~{getDate(row.endDate)}
+                </Table.Cell>
+                <Table.Cell>{row.status}</Table.Cell>
+                <Table.Cell>
+                  <div className="inline-block mx-1 my-0.5">
+                    <Button
+                      gradientDuoTone="purpleToPink"
+                      onClick={() => onClick(row.id, row.projectName)}
+                      size="sm"
+                    >
+                      수정
+                    </Button>
+                  </div>
+                  <div className="inline-block mx-1">
+                    <Button gradientDuoTone="purpleToPink" size="sm">
+                      삭제
+                    </Button>
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            ))}
+          </Table.Body>
         </Table>
       </div>
       <div className="text-center my-5">
