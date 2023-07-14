@@ -7,6 +7,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "flowbite-react";
+import { add3Digit } from "../../../common/utils";
+
 export default function Register({ data }) {
   // console.log(data);
   const router = useRouter();
@@ -15,7 +17,7 @@ export default function Register({ data }) {
     data == null ? "" : data?.projectName
   );
   const [downPayment, setDownPayment] = useState(
-    data == null ? "" : data?.downPayment
+    data == null ? "" : add3Digit(data?.downPayment)
   );
   const [allocPlan, setAllocPlan] = useState(
     data == null ? "" : data?.allocPlan

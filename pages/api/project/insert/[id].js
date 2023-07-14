@@ -11,7 +11,10 @@ export default async function handler(req, res) {
       const sql = `insert into a1_project 
                                   set  
                                     projectName = '${body.projectName}',
-                                    downPayment = '${body.downPayment}',
+                                    downPayment = '${body.downPayment.replace(
+                                      /,/g,
+                                      ""
+                                    )}',
                                     allocPlan = '${body.allocPlan}',
                                     allocDesign = '${body.allocDesign}',
                                     allocPub = '${body.allocPub}',

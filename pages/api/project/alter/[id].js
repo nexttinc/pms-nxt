@@ -10,7 +10,10 @@ export default async function handler(req, res) {
       const body = req.body;
       const sql = `update a1_project set  
                                     projectName = '${body.projectName}',
-                                    downPayment = '${body.downPayment}',
+                                    downPayment = '${body.downPayment.replace(
+                                      /,/g,
+                                      ""
+                                    )}',                                    
                                     allocPlan = '${body.allocPlan}',
                                     allocDesign = '${body.allocDesign}',
                                     allocPub = '${body.allocPub}',

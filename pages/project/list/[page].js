@@ -1,25 +1,15 @@
 import { Button, Table } from "flowbite-react";
 import { useState } from "react";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Pagination from "@mui/material/Pagination";
+import { add3Digit, getYMDate } from "../../../common/utils";
 
 const rowNum = 5;
-
-function AddComma(num) {
-  var regexp = /\B(?=(\d{3})+(?!\d))/g;
-  return num.toString().replace(regexp, ",");
-}
-
-function getDate(str) {
-  return str.substr(0, 10);
-}
 
 export default function Project({ data }) {
   const router = useRouter();
   const page = parseInt(router.query.page);
-  // console.log('router value : ', page);
-  const onClick = (id, projectName) => {
+  const onNavReg = (id, projectName) => {
     router.push(
       {
         pathname: `/project/register/${id}`,
@@ -33,7 +23,6 @@ export default function Project({ data }) {
 
   const [totCnt, displayRows] = data;
   const [currentPage, setCurrentPage] = useState(page);
-  const [currentId, setCurrentId] = useState("");
 
   const totalPage = Math.ceil(totCnt / rowNum);
   const [total, setTotal] = useState(totalPage);
@@ -57,7 +46,7 @@ export default function Project({ data }) {
         <div className="inline-block">
           <Button
             gradientDuoTone="purpleToPink"
-            onClick={() => onClick("0", "")}
+            onClick={() => onNavReg("0", "")}
           >
             등록
           </Button>
@@ -99,17 +88,17 @@ export default function Project({ data }) {
                   {row.id}
                 </Table.Cell>
                 <Table.Cell>{row.projectName}</Table.Cell>
-                <Table.Cell>{AddComma(row.downPayment)}</Table.Cell>
+                <Table.Cell>{add3Digit(row.downPayment)}</Table.Cell>
                 <Table.Cell>{row.member}</Table.Cell>
                 <Table.Cell>
-                  {getDate(row.startDate)}~{getDate(row.endDate)}
+                  {getYMDate(row.startDate)}~{getYMDate(row.endDate)}
                 </Table.Cell>
                 <Table.Cell>{row.status}</Table.Cell>
                 <Table.Cell>
                   <div className="inline-block mx-1 my-0.5">
                     <Button
                       gradientDuoTone="purpleToPink"
-                      onClick={() => onClick(row.id, row.projectName)}
+                      onClick={() => onNavReg(row.id, row.projectName)}
                       size="sm"
                     >
                       수정
