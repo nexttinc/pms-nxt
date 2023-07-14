@@ -8,17 +8,24 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "flowbite-react";
 export default function Register({ data }) {
-  console.log(data);
+  // console.log(data);
   const router = useRouter();
-  const [projectName, setProjectName] = useState(data?.projectName);
-  const [downPayment, setDownPayment] = useState(data?.downPayment);
-  const [allocPlan, setAllocPlan] = useState(data?.allocPlan);
-  const [allocDesign, setAllocDesign] = useState(data?.allocDesign);
-  const [allocPub, setAllocPub] = useState(data?.allocPub);
-  const [allocDev, setAllocDev] = useState(data?.allocDev);
-  const [member, setMember] = useState(data?.member);
-  const [isAlertSuccessOpen, setisAlertSuccessOpen] = useState(false);
-  const [isAlertFailOpen, setisAlertFailOpen] = useState(false);
+  const id = router.query.id;
+  const [projectName, setProjectName] = useState(
+    data == null ? "" : data?.projectName
+  );
+  const [downPayment, setDownPayment] = useState(
+    data == null ? "" : data?.downPayment
+  );
+  const [allocPlan, setAllocPlan] = useState(
+    data == null ? "" : data?.allocPlan
+  );
+  const [allocDesign, setAllocDesign] = useState(
+    data == null ? "" : data?.allocDesign
+  );
+  const [allocPub, setAllocPub] = useState(data == null ? "" : data?.allocPub);
+  const [allocDev, setAllocDev] = useState(data == null ? "" : data?.allocDev);
+  const [member, setMember] = useState(data == null ? "" : data?.member);
 
   const [startDate, setStartDate] = useState(
     data == null ? new Date() : new Date(data.startDate)
@@ -27,10 +34,24 @@ export default function Register({ data }) {
     data == null ? new Date() : new Date(data.endDate)
   );
   const [status, setStatus] = useState(data?.status);
+  const [isAlertSuccessOpen, setisAlertSuccessOpen] = useState(false);
+  const [isAlertFailOpen, setisAlertFailOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleInputNumberChange = (e) => {
+    const value = e.target.value;
+    setDownPayment(
+      value.replace(/\D/g, "").replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+    );
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
-
-    const id = data.id;
+    if (status == undefined) {
+      setErrorMessage("프로젝트 상태를 선택해야 합니다.");
+      setisAlertFailOpen(true);
+      return;
+    }
     const sDate = startDate.toISOString().slice(0, 10);
     const eDate = endDate.toISOString().slice(0, 10);
     const reqData = {
@@ -49,7 +70,13 @@ export default function Register({ data }) {
     setisAlertSuccessOpen(false);
     setisAlertFailOpen(false);
 
-    fetch(`http://localhost:3000/api/project/alter/${id}`, {
+    let targetUrl;
+    if (id == 0)
+      // 등록 시
+      targetUrl = "http://localhost:3000/api/project/insert/";
+    else targetUrl = "http://localhost:3000/api/project/alter/"; //수정 시
+
+    fetch(`${targetUrl}${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +88,9 @@ export default function Register({ data }) {
         if (data == 1) {
           console.log("success");
           setisAlertSuccessOpen(true);
+          if (id == 0) setTimeout(() => router.back(), 1000);
         } else {
+          setErrorMessage("문제가 발생했습니다. 관리자에게 문의해주세요.");
           setisAlertFailOpen(true);
           console.log("data : ", data);
         }
@@ -82,13 +111,13 @@ export default function Register({ data }) {
       <form onSubmit={onSubmit}>
         <div className="mx-auto py-3 text-center">
           <div className="mx-auto py-20 text-center text-4xl font-extrabold">
-            프로젝트 정보
+            프로젝트 정보 {id == 0 ? "등록" : "수정"}
           </div>
           <div className="space-y-6 w-7/12 absolute left-1/2 -translate-x-1/2">
             {isAlertSuccessOpen && (
               <Alert>
                 <span className=" mr-3 font-extrabold">Info alert!</span>
-                성공적으로 수정되었습니다.
+                프로젝트 정보가 {id == 0 ? "등록" : "수정"} 되었습니다.
               </Alert>
             )}
 
@@ -97,7 +126,7 @@ export default function Register({ data }) {
                 <span>
                   <p>
                     <span className=" mr-3 font-extrabold">Info alert!</span>
-                    수정 시 문제가 발생했습니다. 관리자에게 문의해주세요.
+                    {errorMessage}
                   </p>
                 </span>
               </Alert>
@@ -117,8 +146,9 @@ export default function Register({ data }) {
               <TextInput
                 id="curDownPayment"
                 type="text"
+                min="0"
                 value={downPayment}
-                onChange={(e) => setDownPayment(e.target.value)}
+                onChange={handleInputNumberChange}
                 placeholder="프로젝트 금액"
                 required
               />
@@ -136,37 +166,45 @@ export default function Register({ data }) {
             <div className="text-left">
               <Label className="inline-block">기획</Label>
               <TextInput
-                type="text"
+                type="number"
+                maxLength={3}
+                min="0"
                 value={allocPlan}
                 onChange={(e) => setAllocPlan(e.target.value)}
-                className="inline-block w-1/12 mx-1"
+                className="inline-block w-20 mx-1"
                 required
               />
               <Label className="inline-block mr-5">%</Label>
               <Label className="inline-block">디자인</Label>
               <TextInput
-                type="text"
+                type="number"
+                maxLength={3}
+                min="0"
                 value={allocDesign}
                 onChange={(e) => setAllocDesign(e.target.value)}
-                className="inline-block w-1/12 mx-1"
+                className="inline-block w-20 mx-1"
                 required
               />
               <Label className="inline-block mr-5">%</Label>
               <Label className="inline-block">퍼블리싱</Label>
               <TextInput
-                type="text"
+                type="number"
+                maxLength={3}
+                min="0"
                 value={allocPub}
                 onChange={(e) => setAllocPub(e.target.value)}
-                className="inline-block w-1/12 mx-1"
+                className="inline-block w-20 mx-1"
                 required
               />
               <Label className="inline-block mr-5">%</Label>
               <Label className="inline-block">개발</Label>
               <TextInput
-                type="text"
+                type="number"
+                maxLength={3}
+                min="0"
                 value={allocDev}
                 onChange={(e) => setAllocDev(e.target.value)}
-                className="inline-block w-1/12 mx-1"
+                className="inline-block w-20 mx-1"
                 required
               />
               <Label className="inline-block">%</Label>
@@ -204,6 +242,7 @@ export default function Register({ data }) {
                 className="w-20"
                 value={status}
                 label={status ? status : "진행상태"}
+                required
               >
                 <Dropdown.Item value="대기중" onClick={handleSelect}>
                   대기중
@@ -223,7 +262,7 @@ export default function Register({ data }) {
                 gradientDuoTone="purpleToPink"
                 type="submit"
               >
-                등록
+                {id == 0 ? "등록" : "수정"}
               </Button>
 
               <Button
