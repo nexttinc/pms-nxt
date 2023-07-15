@@ -67,9 +67,6 @@ export default function Register({ data }) {
       status,
     };
 
-    setisAlertSuccessOpen(false);
-    setisAlertFailOpen(false);
-
     let targetUrl;
     if (id == 0)
       // 등록 시

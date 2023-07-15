@@ -10,6 +10,6 @@ export default async function handler(req, res) {
 
     // return res.status(200).json(id);
   } catch (e) {
-    throw new Error(e);
+    return res.status(500).json(e.message);
   }
 }
