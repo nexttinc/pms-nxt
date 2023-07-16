@@ -3,6 +3,6 @@
   "user": "nxt",
   "password": "nxt857**",
   "database": "nxt",
-  "connectionLimit": 10,
-  "maxIdle": 10
+  "maxIdle": 10,
+  "connectionLimit": 10
 }

@@ -30,9 +30,9 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
-/common/dbConfig.json
-/common/dbConfig-bk.json
 
 
 # vercel
 .vercel
+common/dbConfig.json
+common/dbConfig-bk.json
