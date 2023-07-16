@@ -14,58 +14,29 @@ import DialogTitle from "@mui/material/DialogTitle";
 const rowNum = 5;
 
 export default function Project({ data }) {
+  const [totCnt, displayRows] = data;
+  const [totCnt2, setTotCnt2] = useState(totCnt);
   const router = useRouter();
   const page = parseInt(router.query.page);
-  const [isAlertSuccessOpen, setisAlertSuccessOpen] = useState(false);
-  const [isAlertFailOpen, setisAlertFailOpen] = useState(false);
+  const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
+  const [isAlertFailOpen, setIsAlertFailOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [delId, setDelId] = useState("");
-  const [totCnt, displayRows] = data;
-  const [rows, setRows] = useState(displayRows);
-  const [currentPage, setCurrentPage] = useState(page);
+
+  const [currentPage, setcurrentPage] = useState(page);
   const totalPage = Math.ceil(totCnt / rowNum);
   const [total, setTotal] = useState(totalPage);
+  console.log(
+    "totCnt, page, currentPage, total",
+    totCnt,
+    page,
+    currentPage,
+    total
+  );
 
   const handleClose = () => {
     setShowConfirm(false);
-  };
-
-  const handleDel = async () => {
-    setShowConfirm(false);
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_WEB_URL}/api/project/delete/${delId}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data == 1) {
-          console.log("success");
-          setisAlertSuccessOpen(true);
-          router.push({
-            pathname: `/project/list/${page}`,
-          });
-          // setTimeout(() => window.location.reload(), 1000);
-          // const updatedRows = displayRows.filter(
-          //   (displayRows) => displayRows.id !== delId
-          // );
-          // console.log(updatedRows)
-          // setRows(updatedRows);
-        } else {
-          setErrorMessage("문제가 발생했습니다. 관리자에게 문의해주세요.");
-          setisAlertFailOpen(true);
-          console.log("data : ", data);
-        }
-      })
-      .catch((error) => {
-        console.error("오류 발생:", error);
-        setisAlertFailOpen(true);
-      });
   };
 
   const onNavReg = (id, projectName) => {
@@ -85,10 +56,52 @@ export default function Project({ data }) {
     setDelId(id);
   };
 
+  const handleDel = async () => {
+    setShowConfirm(false);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_WEB_URL}/api/project/delete/${delId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data == 1) {
+          // console.log("success");
+          setIsAlertSuccessOpen(true);
+          setTotCnt2((prev) => prev - 1);
+          const changeTotalPage = Math.ceil(totCnt2 / rowNum);
+          setTotal(changeTotalPage);
+          const modCount = (totCnt2 - 1) % rowNum;
+          // console.log("total, page, modCount : ", total, page, modCount);
+          if (total == page && modCount == 0) {
+            // 마지막 행일 경우 이전 페이지로 이동을 해야 함
+            // router.push({
+            //   pathname: `/project/list/${page - 1}`,
+            // });
+            location.href = `/project/list/${page - 1}`;
+          } else {
+            // 마지막행이 아닐경우, 현재 페이지로 이동
+            router.push({
+              pathname: `/project/list/${page}`,
+            });
+          }
+        } else {
+          setErrorMessage("문제가 발생했습니다. 관리자에게 문의해주세요.");
+          setIsAlertFailOpen(true);
+          // console.log("data : ", data);
+        }
+      })
+      .catch((error) => {
+        console.error("오류 발생:", error);
+        setIsAlertFailOpen(true);
+      });
+  };
+
   const onPageChange = (e, page) => {
-    // setCurrentPage(page);
-    console.log(e);
-    console.log(page);
     router.push(
       {
         pathname: `/project/list/${page}`,
@@ -114,7 +127,7 @@ export default function Project({ data }) {
         </div>
       </div>
       {isAlertSuccessOpen && (
-        <Alert color="success" onDismiss={() => alert("Alert dismissed!")}>
+        <Alert color="success" onDismiss={() => setIsAlertSuccessOpen(false)}>
           <span>
             <p>
               <span className="font-medium mr-3">Info alert!</span>
@@ -125,7 +138,7 @@ export default function Project({ data }) {
       )}
 
       {isAlertFailOpen && (
-        <Alert color="failure">
+        <Alert color="failure" onDismiss={() => setIsAlertSuccessOpen(false)}>
           <span>
             <p>
               <span className=" mr-3 font-extrabold">Info alert!</span>
@@ -245,11 +258,8 @@ export default function Project({ data }) {
 export async function getServerSideProps(context) {
   let page = context.query.page;
   if (!page) page = 1;
-  // const res = await fetch(
-  //   `${process.env.NEXT_PUBLIC_WEB_URL}/api/project?rownum=${rowNum}&page=${page}`
-  // );
-  // const data = await res.json();
   const data = await getData(page);
+  // console.log(data);
   return { props: { data } };
 }
 

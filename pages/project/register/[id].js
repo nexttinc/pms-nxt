@@ -34,8 +34,8 @@ export default function Register({ data }) {
     data == null ? new Date() : new Date(data.endDate)
   );
   const [status, setStatus] = useState(data?.status);
-  const [isAlertSuccessOpen, setisAlertSuccessOpen] = useState(false);
-  const [isAlertFailOpen, setisAlertFailOpen] = useState(false);
+  const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
+  const [isAlertFailOpen, setIsAlertFailOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputNumberChange = (e) => {
@@ -49,7 +49,7 @@ export default function Register({ data }) {
     e.preventDefault();
     if (status == undefined) {
       setErrorMessage("프로젝트 상태를 선택해야 합니다.");
-      setisAlertFailOpen(true);
+      setIsAlertFailOpen(true);
       return;
     }
     const sDate = startDate.toISOString().slice(0, 10);
@@ -86,17 +86,17 @@ export default function Register({ data }) {
       .then((data) => {
         if (data == 1) {
           console.log("success");
-          setisAlertSuccessOpen(true);
+          setIsAlertSuccessOpen(true);
           if (id == 0) setTimeout(() => router.back(), 1000);
         } else {
           setErrorMessage("문제가 발생했습니다. 관리자에게 문의해주세요.");
-          setisAlertFailOpen(true);
+          setIsAlertFailOpen(true);
           console.log("data : ", data);
         }
       })
       .catch((error) => {
         console.error("오류 발생:", error);
-        setisAlertFailOpen(true);
+        setIsAlertFailOpen(true);
       });
   };
 
@@ -114,14 +114,20 @@ export default function Register({ data }) {
           </div>
           <div className="space-y-6 w-7/12 absolute left-1/2 -translate-x-1/2">
             {isAlertSuccessOpen && (
-              <Alert>
+              <Alert
+                color="success"
+                onDismiss={() => setIsAlertSuccessOpen(false)}
+              >
                 <span className=" mr-3 font-extrabold">Info alert!</span>
                 프로젝트 정보가 {id == 0 ? "등록" : "수정"} 되었습니다.
               </Alert>
             )}
 
             {isAlertFailOpen && (
-              <Alert color="failure">
+              <Alert
+                color="failure"
+                onDismiss={() => setIsAlertFailOpen(false)}
+              >
                 <span>
                   <p>
                     <span className=" mr-3 font-extrabold">Info alert!</span>

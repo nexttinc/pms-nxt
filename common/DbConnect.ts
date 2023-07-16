@@ -26,7 +26,7 @@ export namespace DB {
       }
     }
 
-    async release() {
+    async releaseConnection() {
       //if(this.db) await this.db?.destroy();
     }
 
