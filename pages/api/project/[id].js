@@ -1,7 +1,7 @@
-import { DB } from "../../../common/DbConnect";
-const Pool = await DB.MySqlConn.getInstance.connect();
-// import dbPool from "../../../common/dbPool";
-// const Pool = dbPool.connect();
+// import { DB } from "../../../common/DbConnect";
+// const Pool = await DB.MySqlConn.getInstance.connect();
+import dbPool from "../../../common/dbPool";
+const Pool = dbPool.connect();
 
 export default async function handler(req, res) {
   try {
