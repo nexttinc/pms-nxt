@@ -1,8 +1,0 @@
-{
-  "host": "wordkey.co.kr",
-  "user": "nxt",
-  "password": "nxt857**",
-  "database": "nxt",
-  "maxIdle": 10,
-  "connectionLimit": 10
-}
