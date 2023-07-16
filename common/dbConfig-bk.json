@@ -1,0 +1,14 @@
+{
+  "host": "wordkey.co.kr",
+  "user": "nxt",
+  "password": "nxt857**",
+  "database": "nxt",
+  "connectionLimit": 10,
+  "maxIdle": 10,
+  "queueLimit": 5000,
+  "waitForConnections": true,
+  "idleTimeout": 10,
+  "enableKeepAlive": true,
+  "keepAliveInitialDelay": 60,
+  "charset": "utf8_general_ci"
+}

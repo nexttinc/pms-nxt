@@ -6,9 +6,7 @@ export namespace DB {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB,
-    connectionLimit: 5,
-
-    queueLimit: 0,
+    connectionLimit: 2,
     charset: "utf8_general_ci",
   };
 

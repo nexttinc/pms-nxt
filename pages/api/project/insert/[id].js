@@ -1,11 +1,13 @@
-import { DB } from "../../../../common/DbConnect";
+// import { DB } from "../../../../common/DbConnect";
+// const Pool = await DB.MySqlConn.getInstance.connect();
+import dbPool from "../../../../common/dbPool";
+const Pool = dbPool.connect();
 
 export default async function handler(req, res) {
   const method = req.method;
 
   if (method == "POST") {
     try {
-      const Pool = await DB.MySqlConn.getInstance.connect();
       const body = req.body;
 
       const sql = `insert into pms_project 

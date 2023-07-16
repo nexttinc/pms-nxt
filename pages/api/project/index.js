@@ -1,12 +1,10 @@
-import { DB } from "../../../common/DbConnect";
+// import { DB } from "../../../common/DbConnect";
+// const Pool = await DB.MySqlConn.getInstance.connect();
+import dbPool from "../../../common/dbPool";
+const Pool = dbPool.connect();
 
 export default async function handler(req, res) {
-  const Pool = await DB.MySqlConn.getInstance.connect();
   try {
-    // const sIndex = rownum*(page-1);
-    // console.log(req.query);
-    // console.log(req.method);
-
     const page = req.query.page;
     const rowNum = req.query.rownum;
     const sIndex = rowNum * (page - 1);
