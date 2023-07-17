@@ -12,28 +12,19 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 const rowNum = 5;
-
 export default function Project({ data }) {
-  const [totCnt, displayRows] = data;
-  const [totCnt2, setTotCnt2] = useState(totCnt);
   const router = useRouter();
   const page = parseInt(router.query.page);
+  const [totCnt, displayRows] = data;
+  const [totCnt2, setTotCnt2] = useState(totCnt);
   const [isAlertSuccessOpen, setIsAlertSuccessOpen] = useState(false);
   const [isAlertFailOpen, setIsAlertFailOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const [delId, setDelId] = useState("");
-
   const [currentPage, setcurrentPage] = useState(page);
   const totalPage = Math.ceil(totCnt / rowNum);
   const [total, setTotal] = useState(totalPage);
-  console.log(
-    "totCnt, page, currentPage, total",
-    totCnt,
-    page,
-    currentPage,
-    total
-  );
 
   const handleClose = () => {
     setShowConfirm(false);
@@ -78,7 +69,7 @@ export default function Project({ data }) {
           const modCount = (totCnt2 - 1) % rowNum;
           // console.log("total, page, modCount : ", total, page, modCount);
           if (total == page && modCount == 0) {
-            // 마지막 행일 경우 이전 페이지로 이동을 해야 함
+            // 마지막 행일 경우 이전 페이지로 이동을 해야 함, 클릭시 현재 페이지로 바뀌어야 하는데 MUI Pagination에 해당 기능 줄시 에러가 생김
             // router.push({
             //   pathname: `/project/list/${page - 1}`,
             // });
@@ -193,7 +184,7 @@ export default function Project({ data }) {
               시작일~종료일
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-500 text-white">
-              상태
+              h-4 상태
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-500 text-white">
               편집

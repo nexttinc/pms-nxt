@@ -52,6 +52,14 @@ export default function Register({ data }) {
       setIsAlertFailOpen(true);
       return;
     }
+
+    const sum = allocPlan + allocDesign + allocPub + allocDev;
+    if (sum != 100) {
+      setErrorMessage("기획+디자인+퍼블리싱+개발의 합은 100%여야 합니다.");
+      setIsAlertFailOpen(true);
+      return;
+    }
+
     const sDate = startDate.toISOString().slice(0, 10);
     const eDate = endDate.toISOString().slice(0, 10);
     const reqData = {
@@ -89,7 +97,7 @@ export default function Register({ data }) {
           setIsAlertSuccessOpen(true);
           if (id == 0) setTimeout(() => router.back(), 1000);
         } else {
-          setErrorMessage("문제가 발생했습니다. 관리자에게 문의해주세요.");
+          setErrorMessage(`문제가 발생했습니다. ${data}`);
           setIsAlertFailOpen(true);
           console.log("data : ", data);
         }

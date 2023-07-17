@@ -9,7 +9,6 @@ export default async function handler(req, res) {
     const rowNum = req.query.rownum;
     const sIndex = rowNum * (page - 1);
 
-    await Pool.query("set names utf8mb4");
     const prjSql = `select * from pms_project order by id desc limit ${sIndex}, ${rowNum} `;
     const [prjRows] = await Pool.query(prjSql);
     const cntSql = `select count(*) as totCnt from pms_project`;
