@@ -31,8 +31,7 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-
 # vercel
 .vercel
 common/dbConfig.json
-common/dbConfig-bk.json
+common/DbConnect.ts

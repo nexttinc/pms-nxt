@@ -2,10 +2,10 @@
 import { Button, Label, Dropdown, TextInput } from "flowbite-react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { Alert } from "flowbite-react";
 import { add3Digit } from "../../../common/utils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Register({ data }) {
   // console.log(data);
@@ -153,7 +153,7 @@ export default function Register({ data }) {
                   id="curDownPayment"
                   className="inline-block"
                   type="text"
-                  maxLength={15}
+                  maxLength={12}
                   value={downPayment}
                   onChange={handleInputNumberChange}
                   placeholder="프로젝트 금액"
@@ -300,6 +300,5 @@ export async function getServerSideProps(context) {
     );
     data = await res.json();
   }
-
   return { props: { data } };
 }
