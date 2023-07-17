@@ -147,16 +147,67 @@ export default function Register({ data }) {
                 required
               />
             </div>
-            <div>
-              <TextInput
-                id="curDownPayment"
-                type="text"
-                min="0"
-                value={downPayment}
-                onChange={handleInputNumberChange}
-                placeholder="프로젝트 금액"
-                required
-              />
+            <div className="text-justify">
+              <div className="w-1/5 inline-block">
+                <TextInput
+                  id="curDownPayment"
+                  className="inline-block"
+                  type="text"
+                  maxLength={15}
+                  value={downPayment}
+                  onChange={handleInputNumberChange}
+                  placeholder="프로젝트 금액"
+                  required
+                />
+                <Label className="inline-block ml-1">원</Label>
+              </div>
+
+              <div className="text-left float-right">
+                <Label className="inline-block">기획</Label>
+                <TextInput
+                  type="number"
+                  maxLength={3}
+                  min="0"
+                  value={allocPlan}
+                  onChange={(e) => setAllocPlan(e.target.value)}
+                  className="inline-block w-20 mx-1"
+                  required
+                />
+                <Label className="inline-block mr-5">%</Label>
+                <Label className="inline-block">디자인</Label>
+                <TextInput
+                  type="number"
+                  maxLength={3}
+                  min="0"
+                  value={allocDesign}
+                  onChange={(e) => setAllocDesign(e.target.value)}
+                  className="inline-block w-20 mx-1"
+                  required
+                />
+                <Label className="inline-block mr-5">%</Label>
+                <Label className="inline-block">퍼블리싱</Label>
+                <TextInput
+                  type="number"
+                  maxLength={3}
+                  min="0"
+                  value={allocPub}
+                  onChange={(e) => setAllocPub(e.target.value)}
+                  className="inline-block w-20 mx-1"
+                  required
+                />
+                <Label className="inline-block mr-5">%</Label>
+                <Label className="inline-block">개발</Label>
+                <TextInput
+                  type="number"
+                  maxLength={3}
+                  min="0"
+                  value={allocDev}
+                  onChange={(e) => setAllocDev(e.target.value)}
+                  className="inline-block w-20 mx-1"
+                  required
+                />
+                <Label className="inline-block">%</Label>
+              </div>
             </div>
             <div>
               <TextInput
@@ -168,52 +219,7 @@ export default function Register({ data }) {
                 required
               />
             </div>
-            <div className="text-left">
-              <Label className="inline-block">기획</Label>
-              <TextInput
-                type="number"
-                maxLength={3}
-                min="0"
-                value={allocPlan}
-                onChange={(e) => setAllocPlan(e.target.value)}
-                className="inline-block w-20 mx-1"
-                required
-              />
-              <Label className="inline-block mr-5">%</Label>
-              <Label className="inline-block">디자인</Label>
-              <TextInput
-                type="number"
-                maxLength={3}
-                min="0"
-                value={allocDesign}
-                onChange={(e) => setAllocDesign(e.target.value)}
-                className="inline-block w-20 mx-1"
-                required
-              />
-              <Label className="inline-block mr-5">%</Label>
-              <Label className="inline-block">퍼블리싱</Label>
-              <TextInput
-                type="number"
-                maxLength={3}
-                min="0"
-                value={allocPub}
-                onChange={(e) => setAllocPub(e.target.value)}
-                className="inline-block w-20 mx-1"
-                required
-              />
-              <Label className="inline-block mr-5">%</Label>
-              <Label className="inline-block">개발</Label>
-              <TextInput
-                type="number"
-                maxLength={3}
-                min="0"
-                value={allocDev}
-                onChange={(e) => setAllocDev(e.target.value)}
-                className="inline-block w-20 mx-1"
-                required
-              />
-              <Label className="inline-block">%</Label>
-            </div>
+
             <div>
               <div className="mb-2 block text-left">
                 <div className="text-justify">
