@@ -47,13 +47,22 @@ export default function Register({ data }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setIsAlertFailOpen(false);
+    setErrorMessage(false);
+    setIsAlertSuccessOpen(false);
+
     if (status == undefined) {
       setErrorMessage("프로젝트 상태를 선택해야 합니다.");
       setIsAlertFailOpen(true);
       return;
     }
 
-    const sum = allocPlan + allocDesign + allocPub + allocDev;
+    const sum =
+      parseInt(allocPlan) +
+      parseInt(allocDesign) +
+      parseInt(allocPub) +
+      parseInt(allocDev);
+    console.log(sum);
     if (sum != 100) {
       setErrorMessage("기획+디자인+퍼블리싱+개발의 합은 100%여야 합니다.");
       setIsAlertFailOpen(true);

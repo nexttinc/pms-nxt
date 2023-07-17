@@ -184,7 +184,7 @@ export default function Project({ data }) {
               시작일~종료일
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-500 text-white">
-              h-4 상태
+              상태
             </Table.HeadCell>
             <Table.HeadCell className="bg-gray-500 text-white">
               편집
