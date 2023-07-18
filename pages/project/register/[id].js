@@ -165,10 +165,10 @@ export default function Register({ data }) {
               />
             </div>
             <div className="text-justify">
-              <div className="w-1/5 inline-block">
+              <div className="xl:w-1/5 xl:inline-block lg:block sm:block md: block mr-5">
                 <TextInput
                   id="curDownPayment"
-                  className="inline-block"
+                  className="inline-block w-9/12"
                   type="text"
                   maxLength={12}
                   value={downPayment}
@@ -179,15 +179,15 @@ export default function Register({ data }) {
                 <Label className="inline-block ml-1">원</Label>
               </div>
 
-              <div className="text-left float-right">
-                <Label className="inline-block">기획</Label>
+              <div className="lg:inline-block text-left mt-4">
+                <Label className="inline-block leading-4">기획</Label>
                 <TextInput
                   type="number"
                   maxLength={3}
                   min="0"
                   value={allocPlan}
                   onChange={(e) => setAllocPlan(e.target.value)}
-                  className="inline-block w-20 mx-1"
+                  className="inline-block w-14 mx-1 mt-2"
                   required
                 />
                 <Label className="inline-block mr-5">%</Label>
@@ -198,7 +198,7 @@ export default function Register({ data }) {
                   min="0"
                   value={allocDesign}
                   onChange={(e) => setAllocDesign(e.target.value)}
-                  className="inline-block w-20 mx-1"
+                  className="inline-block w-14 mx-1 mt-2"
                   required
                 />
                 <Label className="inline-block mr-5">%</Label>
@@ -209,7 +209,7 @@ export default function Register({ data }) {
                   min="0"
                   value={allocPub}
                   onChange={(e) => setAllocPub(e.target.value)}
-                  className="inline-block w-20 mx-1"
+                  className="inline-block w-14 mx-1 mt-2"
                   required
                 />
                 <Label className="inline-block mr-5">%</Label>
@@ -220,7 +220,7 @@ export default function Register({ data }) {
                   min="0"
                   value={allocDev}
                   onChange={(e) => setAllocDev(e.target.value)}
-                  className="inline-block w-20 mx-1"
+                  className="inline-block w-14 mx-1 mt-2"
                   required
                 />
                 <Label className="inline-block">%</Label>
