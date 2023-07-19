@@ -165,7 +165,7 @@ export default function Register({ data }) {
               />
             </div>
             <div className="text-justify">
-              <div className="xl:w-1/5 xl:inline-block lg:block sm:block md: block mr-5">
+              <div className="xl:w-1/5 xl:inline-block lg:block mr-5">
                 <TextInput
                   id="curDownPayment"
                   className="inline-block w-9/12"

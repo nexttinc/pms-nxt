@@ -255,6 +255,7 @@ export async function getServerSideProps(context) {
 }
 
 async function getData(page) {
+  // console.log(process.env.NEXT_PUBLIC_WEB_URL);
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_WEB_URL}/api/project?rownum=${rowNum}&page=${page}`
   );
