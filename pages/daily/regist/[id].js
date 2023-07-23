@@ -6,8 +6,29 @@ import NxtConfirm from "../../../component/confirm";
 export default function Register({ data }) {
   const router = useRouter();
   const id = router.query.id;
+
   const [action, setAction] = useState();
-  const onChange = () => {};
+  const [alertMessage, setAlertMessage] =
+    useState("성공적으로 등록되었습니다.");
+  const [confirmMessage, setConfirmMessage] =
+    useState("정말로 삭제하시겠습니까?");
+  const [confirmBodyMessage, setConfirmBodyMessage] = useState(
+    "삭제 후에는 복구가 불가능 합니다."
+  );
+  const [color, setColor] = useState("success");
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
+  const [confirmIsOpen, setConfirmIsOpen] = useState(false);
+
+  const tasks = [
+    { id: "pln", value: "기획" },
+    { id: "des", value: "디자인" },
+    { id: "pub", value: "퍼블리싱" },
+    { id: "dev", value: "개발" },
+  ];
+
+  const [projectName, setProjectName] = useState("");
+  const [task, setTask] = useState("");
+
   useEffect(() => {
     if (action == "del") {
       console.log("del");
@@ -15,16 +36,24 @@ export default function Register({ data }) {
 
     return () => {};
   }, [action]);
+
+  useEffect(() => {
+    console.log("projectId", projectName);
+    console.log("taskId", task);
+
+    return () => {};
+  }, [projectName, task]);
+
   const onSubmit = (e) => {
     e.preventDefault();
   };
   return (
     <>
-      <NxtAlert isOpen={true} color={"failure"} message={"메시지 OK"} />
+      <NxtAlert isOpen={alertIsOpen} color={color} message={alertMessage} />
       <NxtConfirm
-        isOpen={true}
-        message={"정말로 삭제하겠습니까?"}
-        bodyMessage={"메시지 OK"}
+        isOpen={confirmIsOpen}
+        message={confirmMessage}
+        bodyMessage={confirmBodyMessage}
         setAction={setAction}
       />
       <form onSubmit={onSubmit}>
@@ -32,12 +61,20 @@ export default function Register({ data }) {
           <div className="mx-auto py-20 text-center text-4xl font-extrabold">
             일일보고 정보{id == 0 ? "등록" : "수정"}
           </div>
-          <div>
+          <div className="my-5 text-left">
             <NxtSelect
               name="프로젝트"
-              value={data.prjList}
-              default={""}
-              onChange={onChange}
+              items={data.prjList}
+              setComponent={setProjectName}
+              default={projectName}
+            />
+          </div>
+          <div className="my-5 text-left">
+            <NxtSelect
+              name="업무"
+              items={tasks}
+              setComponent={setTask}
+              default={task}
             />
           </div>
         </div>
