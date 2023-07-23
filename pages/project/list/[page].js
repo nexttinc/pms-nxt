@@ -33,12 +33,12 @@ export default function Project({ data }) {
   const onNavReg = (id, projectName) => {
     router.push(
       {
-        pathname: `/project/register/${id}`,
+        pathname: `/project/regist/${id}`,
         query: {
           projectName: projectName,
         },
       },
-      `/project/register/${id}`
+      `/project/regist/${id}`
     );
   };
 

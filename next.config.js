@@ -8,6 +8,11 @@ module.exports = {
         destination: "/project/list/1",
         permanent: true,
       },
+      {
+        source: "/daily/regist",
+        destination: "/daily/regist/0",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {
